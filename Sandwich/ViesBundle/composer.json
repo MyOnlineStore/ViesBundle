@@ -1,0 +1,19 @@
+{
+    "name": "sandwich/vies-bundle",
+    "description": "Symfony bundle for the Vies Package to validate VAT numbers",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "type": "symfony-bundle",
+    "authors": [
+        {
+            "name": "Sandwich BV",
+            "email": "info@myonlinestore.com"
+        }
+    ],
+    "require": {
+        "dragonbe/vies": "^1.0"
+    },
+    "autoload": {
+        "psr-4": { "Sandwich\\ViesBundle\\SandwichViesBundle\\": "" }
+    }
+}

@@ -1,0 +1,10 @@
+services:
+    sandwich_vies.validator.constraint.vat_number_validator:
+        class: MyOnlineStore\Infrastructure\Symfony\Bundle\BackendBundle\Validator\Constraints\VatNumberValidator
+        arguments:
+            - "@sandwich_vies.vies_api"
+        tags:
+            - { name: validator.constraint_validator, alias: vat_number }
+
+    sandwich_vies.vies_api:
+        class: DragonBe\Vies\Vies
