@@ -1,6 +1,6 @@
 <?php
 
-namespace Sandwhich\ViesBundle\Validator\Constraints;
+namespace Sandwich\ViesBundle\Validator\Constraint;
 
 use DragonBe\Vies\Vies;
 use DragonBe\Vies\ViesException;
