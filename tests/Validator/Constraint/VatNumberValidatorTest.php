@@ -8,6 +8,8 @@ use DragonBe\Vies\ViesException;
 use DragonBe\Vies\ViesServiceException;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumber;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumberValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
 {
