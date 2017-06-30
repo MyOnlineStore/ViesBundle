@@ -52,6 +52,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         $this->response = $this->getMockBuilder(CheckVatResponse::class)->disableOriginalConstructor()->getMock();
 
         $this->validator = new VatNumberValidator($this->api);
+        $this->validator->initialize($this->context);
     }
 
     public function testValidateWithEmptyValueWillReturnWithNoViolation()
@@ -96,7 +97,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         $this->context->expects(self::once())->method('addViolation')->with(
             self::MESSAGE,
             ['%format%' => self::FORMAT]
-        );
+        )->willReturn($this->constraintViolationBuilder);
 
         $this->validator->validate('foobar', $this->constraint);
     }
@@ -120,14 +121,14 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
 
-        $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willThrowException(
-            new ViesException()
+        $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
+            $this->response
         );
 
         $this->context->expects(self::once())->method('addViolation')->with(
             self::MESSAGE,
             ['%format%' => self::FORMAT]
-        );
+        )->willReturn($this->constraintViolationBuilder);
 
         $this->response->expects(self::once())->method('isValid')->willReturn(false);
 

@@ -1,6 +1,6 @@
 services:
     sandwich_vies.validator.constraint.vat_number_validator:
-        class: MyOnlineStore\Infrastructure\Symfony\Bundle\BackendBundle\Validator\Constraint\VatNumberValidator
+        class: Sandwich\ViesBundle\Validator\Constraint\VatNumberValidator
         arguments:
             - "@sandwich_vies.vies_api"
         tags:
