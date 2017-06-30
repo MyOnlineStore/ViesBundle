@@ -18,7 +18,7 @@
         "phpunit/phpunit": "~4.8"
     },
     "autoload": {
-        "psr-4": { "Sandwich\\ViesBundle\\SandwichViesBundle\\": "" }
+        "psr-4": { "Sandwich\\ViesBundle\\": "src" }
     },
     "autoload-dev": {
         "psr-4": {
