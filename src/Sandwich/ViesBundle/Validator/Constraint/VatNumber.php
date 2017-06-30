@@ -1,6 +1,6 @@
 <?php
 
-namespace Sandich\ViesBundle\Validator\Constraint;
+namespace Sandwich\ViesBundle\Validator\Constraint;
 
 use Symfony\Component\Validator\Constraint;
 

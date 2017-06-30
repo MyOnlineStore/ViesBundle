@@ -6,7 +6,7 @@ use DragonBe\Vies\CheckVatResponse;
 use DragonBe\Vies\Vies;
 use DragonBe\Vies\ViesException;
 use DragonBe\Vies\ViesServiceException;
-use Sandich\ViesBundle\Validator\Constraint\VatNumber;
+use Sandwich\ViesBundle\Validator\Constraint\VatNumber;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumberValidator;
 
 class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
