@@ -4,7 +4,7 @@ services:
         arguments:
             - "@sandwich_vies.vies_api"
         tags:
-            - { name: validator.constraint_validator, alias: vat_number }
+            - { name: validator.constraint_validator }
 
     sandwich_vies.vies_api:
         class: DragonBe\Vies\Vies

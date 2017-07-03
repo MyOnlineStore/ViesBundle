@@ -24,6 +24,6 @@ final class VatNumber extends Constraint
      */
     public function validatedBy()
     {
-        return 'vat_number';
+        return VatNumberValidator::class;
     }
 }
