@@ -1,5 +1,5 @@
 {
-    "name": "triplkrypl/vies-bundle",
+    "name": "sandwich/vies-bundle",
     "description": "Symfony bundle for the Vies Package to validate VAT numbers",
     "minimum-stability": "stable",
     "license": "proprietary",
