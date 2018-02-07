@@ -45,10 +45,11 @@ final class VatNumberValidator extends ConstraintValidator
 
             $isValid = $result->isValid();
         } catch (ViesServiceException $exception) {
-			$error = error_get_last();
-			if( ! is_null($error) && strpos('SOAP-ERROR', $error['message']) !== false) {
-				error_clear_last();
-			}
+            // if SOAP-ERROR is found clear it, SoapClient __construct can throw two duplicate type of error on one failure
+            $error = error_get_last();
+            if( ! is_null($error) && strpos('SOAP-ERROR', $error['message']) !== false) {
+                error_clear_last();
+            }
             //There is probably a temporary problem with back-end VIES service
             return;
         } catch (ViesException $exception) {
