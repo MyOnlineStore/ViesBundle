@@ -1,5 +1,5 @@
 {
-    "name": "sandwich/vies-bundle",
+    "name": "triplkrypl/vies-bundle",
     "description": "Symfony bundle for the Vies Package to validate VAT numbers",
     "minimum-stability": "stable",
     "license": "proprietary",
@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "dragonbe/vies": "^1.0"
+        "php": ">=7.0",
+        "dragonbe/vies": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8"
