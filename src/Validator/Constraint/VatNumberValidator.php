@@ -32,11 +32,6 @@ final class VatNumberValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->viesApi->getHeartBeat()) {
-            //VIES service is not available
-            return;
-        }
-
         $format = $constraint->format;
         $isValid = false;
 
