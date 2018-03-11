@@ -47,8 +47,8 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->constraint = new VatNumber(['format' => self::FORMAT, 'message' => self::MESSAGE]);
         $this->api = $this->getMockBuilder(Vies::class)->disableOriginalConstructor()->getMock();
-        $this->context = $this->getMock(ExecutionContextInterface::class);
-        $this->constraintViolationBuilder = $this->getMock(ConstraintViolationBuilderInterface::class);
+        $this->context = $this->createMock(ExecutionContextInterface::class);
+        $this->constraintViolationBuilder = $this->createMock(ConstraintViolationBuilderInterface::class);
         $this->response = $this->getMockBuilder(CheckVatResponse::class)->disableOriginalConstructor()->getMock();
 
         $this->validator = new VatNumberValidator($this->api);
@@ -57,7 +57,6 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateWithEmptyValueWillReturnWithNoViolation()
     {
-        $this->api->expects(self::never())->method('getHeartBeat');
         $this->api->expects(self::never())->method('validateVat');
         $this->context->expects(self::never())->method('addViolation');
 
@@ -66,18 +65,30 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateWithNoViesServiceAvailableWillReturnWithNoViolation()
     {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(false);
-
-        $this->api->expects(self::never())->method('validateVat');
+        $this->api->expects(self::once())->method('validateVat')->willThrowException(new ViesServiceException('Connection error'));
         $this->context->expects(self::never())->method('addViolation');
 
         self::assertNull($this->validator->validate('foobar', $this->constraint));
     }
 
+    public function testValidateWithNoViesServiceAvailableWillReturnWithNoViolationSoapCallErrorWillCleared()
+    {
+        $oldErrorReporting = error_reporting(0); //hide error message in console, triggered error is in memory and this is for test needed
+
+        $this->api->expects(self::once())->method('validateVat')->willReturnCallback(function () {
+            trigger_error('SOAP-ERROR Connection error'); //triggered error for simulate soap library behavior
+            throw new ViesServiceException('Connection error');
+        });
+        $this->context->expects(self::never())->method('addViolation');
+        $this->validator->validate('foobar', $this->constraint);
+
+        $this->assertNull(error_get_last()); //check if after validation is not set any error
+
+        error_reporting($oldErrorReporting); //restore error reporting after test
+    }
+
     public function testValidateWithVieServiceExceptionWillReturnWithNoViolation()
     {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
-
         $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willThrowException(
             new ViesServiceException()
         );
@@ -88,8 +99,6 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateWithViesExceptionWillReturnWithViolation()
     {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
-
         $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willThrowException(
             new ViesException()
         );
@@ -104,8 +113,6 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateWithValidVatNumberWillReturnWithNoViolation()
     {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
-
         $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
             $this->response
         );
@@ -119,8 +126,6 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidateWithInValidVatNumberWillReturnWithViolation()
     {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
-
         $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
             $this->response
         );
