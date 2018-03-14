@@ -17,16 +17,11 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
     const MESSAGE = 'horribly wrong';
 
     /**
-     * @var VatNumberValidator
+     * @var \PHPUnit_Framework_MockObject_MockObject|Vies
      */
-    private $validator;
+    private $api;
 
     private $constraint;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ExecutionContextInterface
-     */
-    private $context;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|ConstraintViolationBuilderInterface
@@ -34,14 +29,19 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
     private $constraintViolationBuilder;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Vies
+     * @var \PHPUnit_Framework_MockObject_MockObject|ExecutionContextInterface
      */
-    private $api;
+    private $context;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|CheckVatResponse
      */
     private $response;
+
+    /**
+     * @var VatNumberValidator
+     */
+    private $validator;
 
     protected function setUp()
     {
@@ -64,11 +64,44 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         self::assertNull($this->validator->validate(null, $this->constraint));
     }
 
+    public function testValidateWithInValidVatNumberWillReturnWithViolation()
+    {
+        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
+
+        $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
+            $this->response
+        );
+
+        $this->context->expects(self::once())->method('addViolation')->with(
+            self::MESSAGE,
+            ['%format%' => self::FORMAT]
+        )->willReturn($this->constraintViolationBuilder);
+
+        $this->response->expects(self::once())->method('isValid')->willReturn(false);
+
+        $this->validator->validate('foobar', $this->constraint);
+    }
+
     public function testValidateWithNoViesServiceAvailableWillReturnWithNoViolation()
     {
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn(false);
 
         $this->api->expects(self::never())->method('validateVat');
+        $this->context->expects(self::never())->method('addViolation');
+
+        self::assertNull($this->validator->validate('foobar', $this->constraint));
+    }
+
+    public function testValidateWithValidVatNumberWillReturnWithNoViolation()
+    {
+        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
+
+        $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
+            $this->response
+        );
+
+        $this->response->expects(self::once())->method('isValid')->willReturn(true);
+
         $this->context->expects(self::never())->method('addViolation');
 
         self::assertNull($this->validator->validate('foobar', $this->constraint));
@@ -98,39 +131,6 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
             self::MESSAGE,
             ['%format%' => self::FORMAT]
         )->willReturn($this->constraintViolationBuilder);
-
-        $this->validator->validate('foobar', $this->constraint);
-    }
-
-    public function testValidateWithValidVatNumberWillReturnWithNoViolation()
-    {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
-
-        $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
-            $this->response
-        );
-
-        $this->response->expects(self::once())->method('isValid')->willReturn(true);
-
-        $this->context->expects(self::never())->method('addViolation');
-
-        self::assertNull($this->validator->validate('foobar', $this->constraint));
-    }
-
-    public function testValidateWithInValidVatNumberWillReturnWithViolation()
-    {
-        $this->api->expects(self::once())->method('getHeartBeat')->willReturn(true);
-
-        $this->api->expects(self::once())->method('validateVat')->with(self::FORMAT, 'foobar')->willReturn(
-            $this->response
-        );
-
-        $this->context->expects(self::once())->method('addViolation')->with(
-            self::MESSAGE,
-            ['%format%' => self::FORMAT]
-        )->willReturn($this->constraintViolationBuilder);
-
-        $this->response->expects(self::once())->method('isValid')->willReturn(false);
 
         $this->validator->validate('foobar', $this->constraint);
     }

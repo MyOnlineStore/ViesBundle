@@ -1,3 +1,7 @@
+[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/MyOnlineStore/ViesBundle.svg?style=flat-square)](https://github.com/MyOnlineStore/ViesBundle)
+[![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/MyOnlineStore/ViesBundle.svg?style=flat-square)](https://github.com/MyOnlineStore/ViesBundle)
+[![Scrutinizer](https://img.shields.io/scrutinizer/g/MyOnlineStore/ViesBundle.svg?style=flat-square)](https://github.com/MyOnlineStore/ViesBundle)
+
 # ViesBundle
 
 Symfony 2 Bundle for DragonBe/vies api client. (https://github.com/DragonBe/vies)
