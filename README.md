@@ -11,3 +11,5 @@ Contains a constraint and validator to use VAT validation in your forms
 This project is on [Packagist!](https://packagist.org/packages/sandwich/vies-bundle)
 
 To install the latest stable version use composer require sandwich/vies-bundle.
+
+Contributions are welcome please use the Symfony coding style with some small exceptions (see phpcs.xml)

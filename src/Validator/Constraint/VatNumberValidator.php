@@ -32,18 +32,20 @@ final class VatNumberValidator extends ConstraintValidator
             return;
         }
 
-        if (!$this->viesApi->getHeartBeat()) {
+        if (!$constraint instanceof VatNumber) {
+            return;
+        }
+
+        if (!$this->viesApi->getHeartBeat()->isAlive()) {
             //VIES service is not available
             return;
         }
 
-        $format = $constraint->format;
+        $format = $constraint->getFormat();
         $isValid = false;
 
         try {
-            $result = $this->viesApi->validateVat($format, str_replace($format, '', $value));
-
-            $isValid = $result->isValid();
+            $isValid = $this->viesApi->validateVat($format, str_replace($format, '', $value))->isValid();
         } catch (ViesServiceException $exception) {
             //There is probably a temporary problem with back-end VIES service
             return;
