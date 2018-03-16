@@ -19,7 +19,7 @@ final class VatNumberTest extends \PHPUnit_Framework_TestCase
 
     public function testContainsCorrectInitialFormat()
     {
-        self::assertSame('NL', $this->constraint->format);
+        self::assertSame('NL', $this->constraint->getFormat());
     }
 
     public function testContainsCorrectMessage()

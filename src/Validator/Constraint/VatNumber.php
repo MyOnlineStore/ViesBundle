@@ -20,9 +20,17 @@ final class VatNumber extends Constraint
     public $message = 'This is not a valid %format% vat number.';
 
     /**
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
      * @inheritDoc
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return VatNumberValidator::class;
     }
