@@ -31,14 +31,15 @@ final class VatNumberValidator extends ConstraintValidator
         if (empty($value)) {
             return;
         }
+      
+        if (!$constraint instanceof VatNumber) {
+            return;
+        }
 
-        $format = $constraint->format;
-        $isValid = false;
+        $format = $constraint->getFormat();
 
         try {
-            $result = $this->viesApi->validateVat($format, str_replace($format, '', $value));
-
-            $isValid = $result->isValid();
+            $isValid = $this->viesApi->validateVat($format, str_replace($format, '', $value))->isValid();
         } catch (ViesServiceException $exception) {
             // if SOAP-ERROR is found clear it, SoapClient __construct can throw two duplicate type of error on one failure
             $error = error_get_last();
