@@ -38,6 +38,8 @@ final class VatNumberValidator extends ConstraintValidator
 
         $format = $constraint->getFormat();
 
+        $isValid = false;
+
         try {
             $isValid = $this->viesApi->validateVat($format, str_replace($format, '', $value))->isValid();
         } catch (ViesServiceException $exception) {
