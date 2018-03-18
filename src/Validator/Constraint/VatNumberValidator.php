@@ -31,7 +31,7 @@ final class VatNumberValidator extends ConstraintValidator
         if (empty($value)) {
             return;
         }
-      
+
         if (!$constraint instanceof VatNumber) {
             return;
         }
