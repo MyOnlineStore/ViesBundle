@@ -2,7 +2,7 @@
     "name": "sandwich/vies-bundle",
     "description": "Symfony bundle for the Vies Package to validate VAT numbers",
     "minimum-stability": "stable",
-    "license": "proprietary",
+    "license": "MIT",
     "type": "symfony-bundle",
     "authors": [
         {
@@ -13,9 +13,8 @@
     "require": {
         "php": ">=7.0",
         "dragonbe/vies": "^1.0",
-        "symfony/http-kernel": "^2.8",
-        "symfony/symfony": "^2.8",
-        "symfony/validator": "^2.8"
+        "symfony/dependency-injection": "^2.8||^3.0||^4.0",
+        "symfony/validator": "^2.8||^3.0||^4.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
