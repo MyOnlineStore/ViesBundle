@@ -1,7 +1,36 @@
 language: php
-php:
-  - '7.0'
-  - '7.1'
+
+matrix:
+  include:
+    - php: 7.0
+      env: SYMFONY_VERSION="^2.8"
+    - php: 7.0
+      env: SYMFONY_VERSION="^3.0"
+
+    - php: 7.1
+      env: SYMFONY_VERSION="^2.8"
+    - php: 7.1
+      env: SYMFONY_VERSION="^3.0"
+    - php: 7.1
+      env: SYMFONY_VERSION="^4.0"
+
+    - php: 7.2
+      env: SYMFONY_VERSION="^2.8"
+    - php: 7.2
+      env: SYMFONY_VERSION="^3.0"
+    - php: 7.2
+      env: SYMFONY_VERSION="^4.0"
+
+env:
+  global:
+    - SYMFONY_VERSION=""
+
+before_install:
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/framework-bundle "$SYMFONY_VERSION"; fi
+
+install:
+  - composer install --prefer-source
+
 before_script:
   - composer self-update
   - composer install --prefer-source
