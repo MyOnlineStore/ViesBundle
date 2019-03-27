@@ -5,6 +5,7 @@
 
 /vendor/
 /composer.lock
+/phpcs.xml
 
 # phpunit
 phpunit.xml
