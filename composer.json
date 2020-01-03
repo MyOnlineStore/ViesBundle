@@ -10,9 +10,15 @@
             "email": "info@myonlinestore.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/MyOnlineStore/vies"
+        }
+    ],
     "require": {
         "php": ">=7.0",
-        "dragonbe/vies": "^1.0.2",
+        "dragonbe/vies": "dev-1.0.6-nl-sole-proprietor",
         "symfony/dependency-injection": "^2.8||^3.0||^4.0",
         "symfony/validator": "^2.8||^3.0||^4.0"
     },
