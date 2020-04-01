@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Sandwich\ViesBundle\Validator\Constraint;
 
@@ -26,7 +27,7 @@ final class VatNumberValidator extends ConstraintValidator
     /**
      * @inheritdoc
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (empty($value)) {
             return;

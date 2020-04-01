@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Sandwich\ViesBundle\Tests\Validator\Constraint;
 
@@ -7,36 +8,37 @@ use DragonBe\Vies\HeartBeat;
 use DragonBe\Vies\Vies;
 use DragonBe\Vies\ViesException;
 use DragonBe\Vies\ViesServiceException;
+use PHPUnit\Framework\TestCase;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumber;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumberValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
+class VatNumberValidatorTest extends TestCase
 {
-    const FORMAT = 'NL';
-    const MESSAGE = 'horribly wrong';
+    private const FORMAT = 'NL';
+    private const MESSAGE = 'horribly wrong';
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Vies
+     * @var Vies
      */
     private $api;
 
     private $constraint;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ConstraintViolationBuilderInterface
+     * @var ConstraintViolationBuilderInterface
      */
     private $constraintViolationBuilder;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ExecutionContextInterface
+     * @var ExecutionContextInterface
      */
     private $context;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|CheckVatResponse
+     * @var CheckVatResponse
      */
     private $response;
 
@@ -45,7 +47,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
      */
     private $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->constraint = new VatNumber(['format' => self::FORMAT, 'message' => self::MESSAGE]);
         $this->api = $this->createMock(Vies::class);
@@ -57,7 +59,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->initialize($this->context);
     }
 
-    public function testValidateWithEmptyValueWillReturnWithNoViolation()
+    public function testValidateWithEmptyValueWillReturnWithNoViolation(): void
     {
         $this->api->expects(self::never())->method('getHeartBeat');
         $this->api->expects(self::never())->method('validateVat');
@@ -66,7 +68,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate(null, $this->constraint);
     }
 
-    public function testValidateWithInValidConstraintWillReturnNoViolation()
+    public function testValidateWithInValidConstraintWillReturnNoViolation(): void
     {
         $this->api->expects(self::never())->method('getHeartBeat');
         $this->context->expects(self::never())->method('addViolation');
@@ -74,14 +76,13 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         self::assertNull(
             $this->validator->validate(
                 'foobar',
-                new class() extends Constraint
-                {
+                new class() extends Constraint {
                 }
             )
         );
     }
 
-    public function testValidateWithInValidVatNumberWillReturnWithViolation()
+    public function testValidateWithInValidVatNumberWillReturnWithViolation(): void
     {
         $heartBeat = $this->createMock(HeartBeat::class);
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn($heartBeat);
@@ -102,7 +103,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         self::assertNull($this->validator->validate('foobar', $this->constraint));
     }
 
-    public function testValidateWithNoViesServiceAvailableWillReturnWithNoViolation()
+    public function testValidateWithNoViesServiceAvailableWillReturnWithNoViolation(): void
     {
         $heartBeat = $this->createMock(HeartBeat::class);
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn($heartBeat);
@@ -114,7 +115,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         self::assertNull($this->validator->validate('foobar', $this->constraint));
     }
 
-    public function testValidateWithValidVatNumberWillReturnWithNoViolation()
+    public function testValidateWithValidVatNumberWillReturnWithNoViolation(): void
     {
         $heartBeat = $this->createMock(HeartBeat::class);
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn($heartBeat);
@@ -132,7 +133,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         self::assertNull($this->validator->validate('foobar', $this->constraint));
     }
 
-    public function testValidateWithVieServiceExceptionWillReturnWithNoViolation()
+    public function testValidateWithVieServiceExceptionWillReturnWithNoViolation(): void
     {
         $heartBeat = $this->createMock(HeartBeat::class);
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn($heartBeat);
@@ -147,7 +148,7 @@ class VatNumberValidatorTest extends \PHPUnit_Framework_TestCase
         self::assertNull($this->validator->validate(self::FORMAT.'foobar', $this->constraint));
     }
 
-    public function testValidateWithViesExceptionWillReturnWithViolation()
+    public function testValidateWithViesExceptionWillReturnWithViolation(): void
     {
         $heartBeat = $this->createMock(HeartBeat::class);
         $this->api->expects(self::once())->method('getHeartBeat')->willReturn($heartBeat);
