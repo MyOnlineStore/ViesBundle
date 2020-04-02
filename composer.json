@@ -10,22 +10,17 @@
             "email": "info@myonlinestore.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/MyOnlineStore/vies"
-        }
-    ],
     "require": {
-        "php": ">=7.0",
-        "dragonbe/vies": "dev-1.0.6-nl-sole-proprietor",
-        "symfony/dependency-injection": "^2.8||^3.0||^4.0",
-        "symfony/validator": "^2.8||^3.0||^4.0"
+        "php": ">=7.1",
+        "dragonbe/vies": "^2.1",
+        "symfony/http-kernel": "^3.0||^4.0",
+        "symfony/dependency-injection": "^3.0||^4.0",
+        "symfony/validator": "^3.0||^4.0"
     },
     "require-dev": {
         "myonlinestore/coding-standard": "^1.0",
-        "phpmd/phpmd": "^2.6",
-        "phpunit/phpunit": "~5.7",
+        "phpmd/phpmd": "^2.8",
+        "phpunit/phpunit": "^7.5",
         "roave/security-advisories": "dev-master"
     },
     "autoload": {
