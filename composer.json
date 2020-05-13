@@ -14,7 +14,7 @@
       "php": ">=7.1",
       "dragonbe/vies": "^2.1",
       "symfony/http-kernel": "^3.0||^4.0",
-      "symfony/dependency-injection": "^3.4.26||^4.1.12",
+      "symfony/dependency-injection": "^3.4.26||^4.1.12||^4.2.7",
       "symfony/validator": "^3.0||^4.0"
     },
     "require-dev": {
