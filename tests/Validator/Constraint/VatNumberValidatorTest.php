@@ -8,6 +8,7 @@ use DragonBe\Vies\HeartBeat;
 use DragonBe\Vies\Vies;
 use DragonBe\Vies\ViesException;
 use DragonBe\Vies\ViesServiceException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumber;
 use Sandwich\ViesBundle\Validator\Constraint\VatNumberValidator;
@@ -20,32 +21,21 @@ class VatNumberValidatorTest extends TestCase
     private const FORMAT = 'NL';
     private const MESSAGE = 'horribly wrong';
 
-    /**
-     * @var Vies
-     */
+    /** @var Vies&MockObject */
     private $api;
 
-    private $constraint;
+    private VatNumber $constraint;
 
-    /**
-     * @var ConstraintViolationBuilderInterface
-     */
+    /** @var ConstraintViolationBuilderInterface&MockObject */
     private $constraintViolationBuilder;
 
-    /**
-     * @var ExecutionContextInterface
-     */
+    /** @var ExecutionContextInterface&MockObject */
     private $context;
 
-    /**
-     * @var CheckVatResponse
-     */
+    /** @var CheckVatResponse&MockObject */
     private $response;
 
-    /**
-     * @var VatNumberValidator
-     */
-    private $validator;
+    private VatNumberValidator $validator;
 
     protected function setUp(): void
     {
@@ -76,9 +66,9 @@ class VatNumberValidatorTest extends TestCase
         self::assertNull(
             $this->validator->validate(
                 'foobar',
-                new class() extends Constraint {
-                }
-            )
+                new class () extends Constraint {
+                },
+            ),
         );
     }
 
@@ -145,7 +135,7 @@ class VatNumberValidatorTest extends TestCase
 
         $this->context->expects(self::never())->method('addViolation');
 
-        self::assertNull($this->validator->validate(self::FORMAT.'foobar', $this->constraint));
+        self::assertNull($this->validator->validate(self::FORMAT . 'foobar', $this->constraint));
     }
 
     public function testValidateWithViesExceptionWillReturnWithViolation(): void

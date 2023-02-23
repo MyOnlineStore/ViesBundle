@@ -11,25 +11,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class VatNumberValidator extends ConstraintValidator
 {
-    /**
-     * @var Vies
-     */
-    private $viesApi;
-
-    /**
-     * @param Vies $viesApi
-     */
-    public function __construct(Vies $viesApi)
-    {
-        $this->viesApi = $viesApi;
+    public function __construct(
+        private Vies $viesApi,
+    ) {
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
-        if (empty($value)) {
+        if (empty($value) || !\is_string($value)) {
             return;
         }
 
@@ -46,11 +35,11 @@ final class VatNumberValidator extends ConstraintValidator
         $isValid = false;
 
         try {
-            $isValid = $this->viesApi->validateVat($format, str_replace($format, '', $value))->isValid();
-        } catch (ViesServiceException $exception) {
+            $isValid = $this->viesApi->validateVat($format, \str_replace($format, '', $value))->isValid();
+        } catch (ViesServiceException) {
             //There is probably a temporary problem with back-end VIES service
             return;
-        } catch (ViesException $exception) {
+        } catch (ViesException) {
         }
 
         if ($isValid) {

@@ -11,17 +11,19 @@
         }
     ],
     "require": {
-      "php": ">= 7.1.3",
-      "dragonbe/vies": "^2.1",
-      "symfony/http-kernel": "^4.0||^5.0||^6.0",
-      "symfony/dependency-injection": "^4.1.12||^4.2.7||^5.0||^6.0",
-      "symfony/validator": "^4.0||^5.0||^6.0"
+        "php": "^8.1",
+        "dragonbe/vies": "^2.1",
+        "symfony/config": "^5.0 || ^6.0",
+        "symfony/dependency-injection": "^5.0 || ^6.0",
+        "symfony/http-kernel": "^5.0 || ^6.0",
+        "symfony/validator": "^5.0 || ^6.0"
     },
     "require-dev": {
-        "myonlinestore/coding-standard": "^1.0",
-        "phpmd/phpmd": "^2.8",
-        "phpunit/phpunit": "^7.5",
-        "roave/security-advisories": "dev-master"
+        "myonlinestore/coding-standard": "^4.0",
+        "myonlinestore/php-devtools": "^0.3.7",
+        "phpunit/phpunit": "^10.0",
+        "roave/security-advisories": "dev-latest",
+        "vimeo/psalm": "^5.7"
     },
     "autoload": {
         "psr-4": { "Sandwich\\ViesBundle\\": "src" }
@@ -32,7 +34,9 @@
         }
     },
     "config": {
-        "vendor-dir": "vendor",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

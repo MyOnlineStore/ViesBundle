@@ -1,0 +1,44 @@
+name: Test
+
+on: push
+
+jobs:
+    setup:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v3
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 8.1
+                    coverage: none
+            -   uses: ramsey/composer-install@v2
+            -   id: set-php-versions
+                run: echo "php-versions=$(vendor/bin/devtools list:php-versions)" >> $GITHUB_OUTPUT
+            -   id: set-tools
+                run: echo "tools=$(vendor/bin/devtools list:enabled-tools)" >> $GITHUB_OUTPUT
+        outputs:
+            php-versions: ${{ steps.set-php-versions.outputs.php-versions }}
+            tools: ${{ steps.set-tools.outputs.tools }}
+
+    test:
+        needs: setup
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php-version: ${{ fromJson(needs.setup.outputs.php-versions) }}
+                tool: ${{ fromJson(needs.setup.outputs.tools) }}
+            fail-fast: false
+        name: ${{ matrix.php-version }} - ${{ matrix.tool }}
+        steps:
+            -   uses: actions/checkout@v3
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php-version }}
+                    tools: cs2pr
+            -   uses: ramsey/composer-install@v2
+                with:
+                  composer-options: ''
+            -   run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+            -   run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+            -   run: vendor/bin/devtools ${{ matrix.tool }} --format=github
